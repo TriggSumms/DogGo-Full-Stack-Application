@@ -38,13 +38,6 @@ namespace DogGo.Controllers
 
             return View(owner);
         }
-        //public ActionResult Create(int id)
-        //{
-        //    Owner owner = _ownerRepo.AddOwner(owner);
-
-        //    return View(owner);
-        //}
-        // POST: Owners/
 
         public ActionResult Create()
         {
