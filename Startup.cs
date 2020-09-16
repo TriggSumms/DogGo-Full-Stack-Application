@@ -56,6 +56,7 @@ namespace DogGo
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                // localhost:5001/Walker(Controller)/Details(Methods/Action)/2(id)
             });
         }
     }
