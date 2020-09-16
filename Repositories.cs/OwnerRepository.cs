@@ -47,7 +47,7 @@ namespace DogGo.Repositories
                             Email = reader.GetString(reader.GetOrdinal("Email")),
                             Address = reader.GetString(reader.GetOrdinal("Address")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
-                            Phone = reader.GetInt32(reader.GetOrdinal("Phone"))
+                            Phone = reader.GetString(reader.GetOrdinal("Phone"))
                         };
 
                         owners.Add(owner);
@@ -86,7 +86,7 @@ namespace DogGo.Repositories
                             Email = reader.GetString(reader.GetOrdinal("Email")),
                             Address = reader.GetString(reader.GetOrdinal("Address")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
-                            Phone = reader.GetInt32(reader.GetOrdinal("Phone"))
+                            Phone = reader.GetString(reader.GetOrdinal("Phone"))
                         };
 
                         reader.Close();
