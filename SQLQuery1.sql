@@ -167,4 +167,15 @@ INSERT INTO Walks ([Date], Duration, WalkerId, DogId) VALUES ('2020-04-09 13:30:
                         FROM Owner
  SELECT Id, [Name], OwnerId, Breed
                         FROM Dog
+
+						SELECT Id, [Date], Duration, WalkerId, DogId FROM Walks
+
+						SELECT w.Id, w.[Date], w.Duration, w.WalkerId, w.DogId,
+						d.Name as NameofDog, d.OwnerId, o.Name as NameofOwner
+                        FROM Walks w
+                        JOIN Dog d ON w.DogId = d.Id
+                        JOIN Owner o ON o.Id = d.OwnerId
+                        
+                        
+                       
 /* TESTING GROUNDS: */
