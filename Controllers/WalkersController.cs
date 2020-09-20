@@ -16,20 +16,24 @@ namespace DogGo.Controllers
     {
         private readonly IWalkerRepository _walkerRepo;
 
-        private readonly IDogRepository _dogRepo;
+        //private readonly IDogRepository _dogRepo;
+        private readonly INeighborhoodRepository _neighborhoodRepo;
 
-        private readonly IWalkRepository _walksRepo;
+        private readonly IWalkRepository _walkRepo;
+        
 
 
         // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
         public WalkersController(
             IWalkerRepository walkerRepository,
-            IDogRepository dogRepository,
-            IWalkRepository walksRepository)
+            //IDogRepository dogRepository,
+            IWalkRepository walkRepository,
+            INeighborhoodRepository neighborhoodRepository)
         {
             _walkerRepo = walkerRepository;
-            _dogRepo = dogRepository;
-            _walksRepo = walksRepository;
+           // _dogRepo = dogRepository;
+            _walkRepo = walkRepository;
+            _neighborhoodRepo = neighborhoodRepository;
         }
 
 
@@ -53,21 +57,21 @@ namespace DogGo.Controllers
         public ActionResult Details(int id)
         {
             Walker walker = _walkerRepo.GetWalkerById(id);
-            List<Walker> walkers = _walkerRepo.GetAllWalkers();
+            //List<Walker> walkers = _walkerRepo.GetAllWalkers();
             //Walk walks = _walkerRepo.GetAll();
             //Had to add to idogRepo...
             //List<Dog> dogs = _dogRepo.GetDogsByWalkerId(walker.Id);
             //
-            List<Walk> walk = _walksRepo.GetALLWalksandIds(walker.Id);
+            List<Walk> walks = _walkRepo.GetALLWalksandIds(walker.Id);
 
 
             //We used the items declared above.....to pair our new lists/paramenters with the requested Id 
             //and then shoved it into a profileVIEW, then we returned it. (Had to change details panel)
             WalkerDetailsViewModel vm = new WalkerDetailsViewModel()
             {
-                Walkers = walkers,
+                Walker = walker,
                // Dogs = dogs,
-                Walks = walk
+                Walks = walks
             };
 
             return View(vm);

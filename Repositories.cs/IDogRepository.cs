@@ -6,9 +6,9 @@ namespace DogGo.Repositories
 {
     public interface IDogRepository
     {
-       void AddDog(Dog dog);
+       void AddDog(Dog newDog);
         void DeleteDog(int dogId);
-        Dog GetDogByBreed(string breed);
+        //Dog GetDogByBreed(string breed);
         List<Dog> GetAllDogs();
         Dog GetDogById(int id);
         void UpdateDog(Dog dog);

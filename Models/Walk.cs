@@ -12,10 +12,18 @@ namespace DogGo.Models
         public DateTime Date { get; set; }
         public int Duration { get; set; }
 
-        public int DogId { get; set; }
-
         public int WalkerId { get; set; }
 
         public int OwnerId { get; set; }
+
+        public int DogId { get; set; }
+
+       // public int NeighborhoodId { get; set; }
+
+        //public Neighborhood Neighborhood { get; set; }
+
+        public Dog Dog { get; set; }
+        public Owner Owner { get; set; }
+        
     }
 }

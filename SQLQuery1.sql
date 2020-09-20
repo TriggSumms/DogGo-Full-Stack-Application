@@ -170,12 +170,42 @@ INSERT INTO Walks ([Date], Duration, WalkerId, DogId) VALUES ('2020-04-09 13:30:
 
 						SELECT Id, [Date], Duration, WalkerId, DogId FROM Walks
 
-						SELECT w.Id, w.[Date], w.Duration, w.WalkerId, w.DogId,
-						d.Name as NameofDog, d.OwnerId, o.Name as NameofOwner
+						SELECT w.Id, w.[Date], w.Duration, w.WalkerId, w.DogId, 
+						d.Name AS NameofDog, d.OwnerId, o.Name AS NameofOwner
                         FROM Walks w
                         JOIN Dog d ON w.DogId = d.Id
                         JOIN Owner o ON o.Id = d.OwnerId
                         
-                        
+						SELECT w.Id, w.[Date], w.Duration, w.WalkerId, w.DogId,
+						d.[Name] AS NameofDog, d.OwnerId, o.[Name] AS NameofOwner,
+                         Walker.[Name] AS NameofWalker, walker.ImageUrl, walker.NeighborhoodId,
+						 n.Name AS NeighborhoodName
+                        FROM Walks w
+                        JOIN Dog d ON w.DogId = d.Id
+                        Join Walker ON w.WalkerId = Walker.Id
+                        JOIN Owner o ON o.Id = d.OwnerId
+						JOIN Neighborhood n on o.NeighborhoodId = n.Id
                        
+
+
+					SELECT w.Id, w.[Name], w.ImageUrl, w.NeighborhoodId,
+					n.Name as NeighborhoodName
+                    FROM Walker w 
+					JOIN Neighborhood n ON w.NeighborhoodId = n.Id
+
+					    SELECT w.Id, w.[Name], w.ImageUrl, n.Id, n.Name as NeighborhoodName
+                        FROM Walker w
+                        JOIN Neighborhood n ON w.NeighborhoodId = n.Id
+
+
+
+						SELECT w.Id, w.[Date], w.Duration, w.WalkerId, w.DogId,
+						d.[Name] AS NameofDog, d.OwnerId, o.[Name] AS NameofOwner,
+                         Walker.[Name] AS NameofWalker, walker.ImageUrl, walker.NeighborhoodId,
+						 n.Name AS NeighborhoodName
+                        FROM Walks w
+                        JOIN Dog d ON w.DogId = d.Id
+                        Join Walker ON w.WalkerId = Walker.Id
+                        JOIN [Owner] o ON d.OwnerId = o.Id
+						JOIN Neighborhood n on Walker.NeighborhoodId = n.Id                       
 /* TESTING GROUNDS: */

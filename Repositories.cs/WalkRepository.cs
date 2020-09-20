@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+//using System.configuration.dll
 
 namespace DogGo.Repositories
 {
@@ -57,7 +58,7 @@ namespace DogGo.Repositories
                 }
             }
         }
-        public List<Walk> GetALLWalksandIds(int id)
+        public List<Walk> GetALLWalksandIds(int walkerId)
         {
             using (SqlConnection conn = Connection)
             {
@@ -66,13 +67,18 @@ namespace DogGo.Repositories
                 {
                     cmd.CommandText = @"
 						SELECT w.Id, w.[Date], w.Duration, w.WalkerId, w.DogId,
-						d.Name as NameofDog, d.OwnerId, o.Name as NameofOwner
+						d.[Name] AS NameofDog, d.OwnerId, o.[Name] AS NameofOwner,
+                         Walker.[Name] AS NameofWalker, walker.ImageUrl, walker.NeighborhoodId,
+						 n.Name AS NeighborhoodName
                         FROM Walks w
                         JOIN Dog d ON w.DogId = d.Id
-                        JOIN Owner o ON o.Id = d.OwnerId
+                        Join Walker ON w.WalkerId = Walker.Id
+                        JOIN [Owner] o ON d.OwnerId = o.Id
+						JOIN Neighborhood n on Walker.NeighborhoodId = n.Id    
+                        WHERE Walker.Id = @walkerId
             ";
 
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@walkerId", walkerId);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -85,9 +91,24 @@ namespace DogGo.Repositories
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                             Duration = reader.GetInt32(reader.GetOrdinal("Duration")),
                             WalkerId = reader.GetInt32(reader.GetOrdinal("WalkerId")),
+                            OwnerId = reader.GetInt32(reader.GetOrdinal("OwnerId")),
                             DogId = reader.GetInt32(reader.GetOrdinal("DogId")),
-                            //Dog.Name = reader.GetString(reader.GetOrdinal("Name")),
-                            OwnerId = reader.GetInt32(reader.GetOrdinal("OwnerId"))
+                            Dog = new Dog()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("DogId")),
+                                Name = reader.GetString(reader.GetOrdinal("NameofDog")),
+                            },
+                            Owner = new Owner()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("OwnerId")),
+                                Name = reader.GetString(reader.GetOrdinal("NameofOwner")),
+                            }
+                            //NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
+                            //Neighborhood = new Neighborhood()
+                            //{
+                            //    Id = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
+                            //    Name = reader.GetString(reader.GetOrdinal("NeighborhoodName")),
+                            //}
 
                         };
 
