@@ -28,7 +28,10 @@
                 @Html.DisplayNameFor(model => model.Phone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NeighborhoodId)
+                @* LOOK AT THIS
+            Changed the table's header from NeighborhoodId to Neighborhood
+                *@
+                Neighborhood
             </th>
             <th></th>
         </tr>
@@ -52,10 +55,13 @@
                 @Html.DisplayFor(modelItem => item.Phone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NeighborhoodId)
+                @* LOOK AT THIS
+            Display the name of the Owner's Neighborhood
+                *@
+                @Html.DisplayFor(modelItem => item.Neighborhood.Name)
             </td>
             <td>
-                
+
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
