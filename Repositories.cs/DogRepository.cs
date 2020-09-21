@@ -196,7 +196,9 @@ namespace DogGo.Repositories
                         cmd.Parameters.AddWithValue("@ImageUrl", newDog.ImageUrl);
                     }
 
-                    newDog.Id = (int)cmd.ExecuteScalar();
+                    int newlyCreatedId = (int)cmd.ExecuteScalar();
+
+                    newDog.Id = newlyCreatedId;
                 }
             }
         }

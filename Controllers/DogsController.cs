@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DogGo.Models;
 using DogGo.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DogGo.Controllers
 {
+   // [Authorize]
+    //Stuck Authorize at the top because I would like all of the methods to need a login
     public class DogsController : Controller
 
     {
@@ -18,13 +22,31 @@ namespace DogGo.Controllers
         {
             _dogRepo = dogRepository;
         }
+
+
+
         // GET: DogController
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    List<Dog> dogs = _dogRepo.GetAllDogs();
+        //    return View(dogs);
+        //}
+
+
+        //New call sorting with login method, replaced the GETcontroller
+        
+        public ActionResult Index()
         {
-            List<Dog> dogs = _dogRepo.GetAllDogs();
+            int ownerId = GetCurrentUserId();
+
+            List<Dog> dogs = _dogRepo.GetDogsByOwnerId(ownerId);
+
             return View(dogs);
         }
+        //End
 
+
+        
         // GET: DogController/Details/5
         public ActionResult Details(int id)
         {
@@ -37,29 +59,31 @@ namespace DogGo.Controllers
 
             return View(dog);
         }
-
+        
         // GET: DogController/Create
         public ActionResult Create()
         {
             return View();
         }
 
+       
         // POST: DogController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Dog dog)
+        public ActionResult Create(Dog newDog)
         {
             try
             {
-                _dogRepo.AddDog(dog);
+                newDog.OwnerId = GetCurrentUserId();
+                _dogRepo.AddDog(newDog);
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return View(dog);
+                return View(newDog);
             }
         }
-
+        
         // GET: DogController/Edit/5
         public ActionResult Edit(int id)
         {
@@ -72,7 +96,7 @@ namespace DogGo.Controllers
 
             return View(dog);
         }
-
+        
         // POST: DogController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -90,7 +114,7 @@ namespace DogGo.Controllers
             }
         }
 
-
+      
         // GET: DogController/Delete/5
         public ActionResult Delete(int id)
         {
@@ -98,7 +122,7 @@ namespace DogGo.Controllers
 
             return View(dog);
         }
-
+        
         // POST: DogController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -115,5 +139,15 @@ namespace DogGo.Controllers
                 return View(dog);
             }
         }
+
+
+        //Helper Method, for authenticating the current logged in users management privelages
+        private int GetCurrentUserId()
+        {
+            //User is built in to MVC, it is a property given to us....
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
+        }
+        //END login helper management 
     }
 }
