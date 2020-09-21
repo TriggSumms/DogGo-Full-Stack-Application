@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DogGo.Controllers
 {
+    //If I was to change the public class name of walker and use intelisense....it would change the occurences and then by changing the file name and index.cshtml....I could chage the url link name
+    //
     public class WalkersController : Controller
     {
         private readonly IWalkerRepository _walkerRepo;

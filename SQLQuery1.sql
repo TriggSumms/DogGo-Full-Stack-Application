@@ -165,5 +165,6 @@ INSERT INTO Walks ([Date], Duration, WalkerId, DogId) VALUES ('2020-04-09 13:30:
 /* TESTING GROUNDS: */
    SELECT Id, [Name], Email, [Address], NeighborhoodId, Phone
                         FROM Owner
-
+ SELECT Id, [Name], OwnerId, Breed
+                        FROM Dog
 /* TESTING GROUNDS: */

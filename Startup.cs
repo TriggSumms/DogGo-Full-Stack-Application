@@ -29,6 +29,8 @@ namespace DogGo
             services.AddTransient<IWalkerRepository, WalkerRepository>();
 
             services.AddTransient<IOwnerRepository, OwnerRepository>();
+
+            services.AddTransient<IDogRepository, DogRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +58,7 @@ namespace DogGo
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                // localhost:5001/Walker(Controller)/Details(Methods/Action)/2(id)
             });
         }
     }
