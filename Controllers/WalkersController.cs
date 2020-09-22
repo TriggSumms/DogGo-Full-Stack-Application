@@ -64,16 +64,22 @@ namespace DogGo.Controllers
 
         public ActionResult Index()
         {
-           int ownerId = GetCurrentUserId();
+            //Chp 6 currentUserId attached to index, two lists generated based on logged in/out and list based on neighborhood match
+            int ownerzId = GetCurrentUserId();
+            Owner theOwner = _ownerRepo.GetOwnerById(ownerzId);
+            List<Walker> walkerz = _walkerRepo.GetWalkersInNeighborhood(theOwner.NeighborhoodId);
             List<Walker> walkers = _walkerRepo.GetAllWalkers();
-            List<Walker> walkerz = _walkerRepo.GetWalkersInNeighborhood(ownerId);
 
-            if (ownerId== null)
+            if (ownerzId != 0)
             {
+                
                 return View(walkerz);
             }
-
-            return View(walkers);
+            else
+            {
+                
+                return View(walkers);
+            }
         }
 
         // GET: Walkers
