@@ -218,9 +218,9 @@ namespace DogGo.Controllers
             //Run the code or run the 401 ERROR/unauth'd
             var claims = new List<Claim>
     {
-        new Claim(ClaimTypes.NameIdentifier, owner.Id.ToString()),
-        new Claim(ClaimTypes.Email, owner.Email),
-        new Claim(ClaimTypes.Role, "DogOwner"),
+            new Claim(ClaimTypes.NameIdentifier, owner.Id.ToString()),
+            new Claim(ClaimTypes.Email, owner.Email),
+            new Claim(ClaimTypes.Role, "DogOwner"),
     };
 
             var claimsIdentity = new ClaimsIdentity(
@@ -233,6 +233,13 @@ namespace DogGo.Controllers
             return RedirectToAction("Index", "Dogs");
         }
         //LOGIN END
+        //Logout
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+        //Logout END
 
     }
 }

@@ -78,8 +78,8 @@ namespace DogGo.Repositories
                 {
                     cmd.CommandText = @"SELECT o.Id, o.[Name], o.Email, o.Address, o.Phone, o.NeighborhoodId, 
                                                n.Name as NeighborhoodName
-                                          FROM Owner o JOIN Neighborhood n on o.NeighborhoodId = n.Id
-                                         WHERE o.Id = @id";
+                                          FROM Owner o LEFT JOIN Neighborhood n on o.NeighborhoodId = n.Id
+                                         WHERE n.Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
 

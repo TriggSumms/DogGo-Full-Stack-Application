@@ -73,7 +73,7 @@ namespace DogGo.Repositories
             }
         }
 
-        public Dog GetDogById(int ownerid)
+        public Dog GetDogById(int id)
         {
             using (SqlConnection conn = Connection)
             {
@@ -84,9 +84,9 @@ namespace DogGo.Repositories
                     cmd.CommandText = @"
                         SELECT Id, [Name], Breed,Notes, ImageUrl, OwnerId
                         FROM Dog
-                        WHERE OwnerId = @ownerId ";
+                       WHERE Id = @id";
 
-                    cmd.Parameters.AddWithValue("@ownerId", ownerid);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -158,7 +158,7 @@ namespace DogGo.Repositories
         //    }
         //}
 
-        public void AddDog(Dog newDog)
+        public void AddDog(Dog dog)
         {
             using (SqlConnection conn = Connection)
             {
@@ -171,34 +171,34 @@ namespace DogGo.Repositories
                     VALUES (@name, @ownerId, @breed, @notes, @imageUrl);
                 ";
 
-                    cmd.Parameters.AddWithValue("@name", newDog.Name);
-                    cmd.Parameters.AddWithValue("@ownerId", newDog.OwnerId);
-                    cmd.Parameters.AddWithValue("@breed", newDog.Breed);
+                    cmd.Parameters.AddWithValue("@name", dog.Name);
+                    cmd.Parameters.AddWithValue("@ownerId", dog.OwnerId);
+                    cmd.Parameters.AddWithValue("@breed", dog.Breed);
                     //  If newDog.Notes is null, we can use it as the value for the SQL Parameter.
                     //  Instead we use the special value, DbNull.Value.
                     //  This will insert NULL into the Notes column in the database.
-                    if (newDog.Notes == null)
+                    if (dog.Notes == null)
                     {
                         cmd.Parameters.AddWithValue("@Notes", DBNull.Value);
                     }
                     else
                     {
-                        cmd.Parameters.AddWithValue("@Notes", newDog.Notes);
+                        cmd.Parameters.AddWithValue("@Notes", dog.Notes);
                     }
 
                     // LOOK AT THIS
-                    if (newDog.ImageUrl == null)
+                    if (dog.ImageUrl == null)
                     {
                         cmd.Parameters.AddWithValue("@ImageUrl", DBNull.Value);
                     }
                     else
                     {
-                        cmd.Parameters.AddWithValue("@ImageUrl", newDog.ImageUrl);
+                        cmd.Parameters.AddWithValue("@ImageUrl", dog.ImageUrl);
                     }
 
                     int newlyCreatedId = (int)cmd.ExecuteScalar();
 
-                    newDog.Id = newlyCreatedId;
+                    dog.Id = newlyCreatedId;
                 }
             }
         }
@@ -216,7 +216,10 @@ namespace DogGo.Repositories
                             SET 
                                 [Name] = @name, 
                                 OwnerId = @ownerId, 
-                                Breed = @breed 
+                                Breed = @breed
+                                Notes = @notes,
+                                ImageUrl = @imageUrl
+                       
                          
                                 
                             WHERE Id = @id";
@@ -225,6 +228,24 @@ namespace DogGo.Repositories
                     cmd.Parameters.AddWithValue("@ownerId", dog.OwnerId);
                     cmd.Parameters.AddWithValue("@breed", dog.Breed);
                     cmd.Parameters.AddWithValue("@id", dog.Id);
+
+                    if (dog.Notes == null)
+                    {
+                        cmd.Parameters.AddWithValue("@notes", DBNull.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@notes", dog.Notes);
+                    }
+
+                    if (dog.ImageUrl == null)
+                    {
+                        cmd.Parameters.AddWithValue("@imageUrl", DBNull.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@imageUrl", dog.ImageUrl);
+                    }
 
                     cmd.ExecuteNonQuery();
                 }

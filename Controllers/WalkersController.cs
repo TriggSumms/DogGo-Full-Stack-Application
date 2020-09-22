@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DogGo.Models;
 using DogGo.Models.ViewModels;
@@ -20,7 +21,8 @@ namespace DogGo.Controllers
         private readonly INeighborhoodRepository _neighborhoodRepo;
 
         private readonly IWalkRepository _walkRepo;
-        
+
+        private readonly IOwnerRepository _ownerRepo;
 
 
         // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
@@ -28,24 +30,59 @@ namespace DogGo.Controllers
             IWalkerRepository walkerRepository,
             //IDogRepository dogRepository,
             IWalkRepository walkRepository,
-            INeighborhoodRepository neighborhoodRepository)
+            INeighborhoodRepository neighborhoodRepository,
+            IOwnerRepository ownerRepository)
         {
             _walkerRepo = walkerRepository;
            // _dogRepo = dogRepository;
             _walkRepo = walkRepository;
             _neighborhoodRepo = neighborhoodRepository;
+            _ownerRepo = ownerRepository;
+
+        }
+
+
+        private int GetCurrentUserId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
 
 
 
+        ////New call sorting with login method, replaced the GETcontroller
 
-        // GET: Walkers
-        public IActionResult Index()
+        //public ActionResult Index()
+        //{
+        //    int ownerId = GetCurrentUserId();
+
+        //    List<Dog> dogs = _dogRepo.GetDogsByOwnerId(ownerId);
+
+        //    return View(dogs);
+        //}
+        ////End
+
+        public ActionResult Index()
         {
+           int ownerId = GetCurrentUserId();
             List<Walker> walkers = _walkerRepo.GetAllWalkers();
+            List<Walker> walkerz = _walkerRepo.GetWalkersInNeighborhood(ownerId);
+
+            if (ownerId== null)
+            {
+                return View(walkerz);
+            }
 
             return View(walkers);
         }
+
+        // GET: Walkers
+        //public IActionResult Index()
+        //{
+        //    List<Walker> walkers = _walkerRepo.GetAllWalkers();
+
+        //    return View(walkers);
+        //}
         // GET: Walkers/Details/5
 
 
@@ -57,11 +94,6 @@ namespace DogGo.Controllers
         public ActionResult Details(int id)
         {
             Walker walker = _walkerRepo.GetWalkerById(id);
-            //List<Walker> walkers = _walkerRepo.GetAllWalkers();
-            //Walk walks = _walkerRepo.GetAll();
-            //Had to add to idogRepo...
-            //List<Dog> dogs = _dogRepo.GetDogsByWalkerId(walker.Id);
-            //
             List<Walk> walks = _walkRepo.GetALLWalksandIds(walker.Id);
 
 

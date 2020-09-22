@@ -207,5 +207,9 @@ INSERT INTO Walks ([Date], Duration, WalkerId, DogId) VALUES ('2020-04-09 13:30:
                         JOIN Dog d ON w.DogId = d.Id
                         Join Walker ON w.WalkerId = Walker.Id
                         JOIN [Owner] o ON d.OwnerId = o.Id
-						JOIN Neighborhood n on Walker.NeighborhoodId = n.Id                       
+						JOIN Neighborhood n on Walker.NeighborhoodId = n.Id     
+						
+						SELECT *
+						FROM Dog
+
 /* TESTING GROUNDS: */

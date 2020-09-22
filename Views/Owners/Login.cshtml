@@ -1,4 +1,5 @@
-﻿@model DogGo.Models.ViewModels.LoginViewModel
+﻿
+@model DogGo.Models.ViewModels.LoginViewModel
 
 @{
     ViewData["Title"] = "Login";
@@ -6,7 +7,6 @@
 
 <h1>Login</h1>
 
-<h4></h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,7 +24,7 @@
     </div>
 </div>
 
-<div>
-    
-</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 
